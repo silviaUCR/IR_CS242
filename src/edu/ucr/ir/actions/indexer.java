@@ -40,8 +40,8 @@ public class indexer {
         String usage = "java org.apache.lucene.demo.IndexFiles"
                 + "This indexes the documents in DOCS_PATH, creating a Lucene index"
                 + "in INDEX_PATH that can be searched with SearchFiles";
-        String indexPath = "C:\\Data Index";
-        String docsPath = "C:\\Data Extracts";
+        String indexPath = "C:\\Data Index"; //We can change this to any location
+        String docsPath = "C:\\Data Extracts"; //The output of the crawler location.
         boolean create = true;
         for(int i=0;i<args.length;i++) {
             if ("-index".equals(args[i])) {
