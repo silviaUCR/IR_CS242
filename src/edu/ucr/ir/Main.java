@@ -27,8 +27,8 @@ public class Main {
             crawler.do_crawl(results.getArgs());
 
         // Index?
-        if (results.hasOption('i'))
-            indexer.do_index(results.getArgs());
+        //if (results.hasOption('i'))
+          //  indexer.do_index(results.getArgs());
 
         // Help
         if (results.hasOption('h'))
