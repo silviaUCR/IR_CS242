@@ -10,6 +10,7 @@ import org.apache.commons.cli.ParseException;
 
 // Our packages
 import edu.ucr.ir.actions.*;
+import edu.ucr.ir.data.*;
 
 public class Main {
     public static void main(String[] args) {
