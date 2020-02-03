@@ -12,5 +12,6 @@
     <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
     <orderEntry type="library" name="lucene-core-8.4.1" level="project" />
     <orderEntry type="library" name="lucene-queryparser-8.4.1" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>
