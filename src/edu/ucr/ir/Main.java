@@ -20,7 +20,7 @@ public class Main {
             Entry-point of application
          */
         System.out.println("Starting...");
-        indexer.indexCrawlerData("testfile.json");
+        //indexer.indexCrawlerData("testfile.json");
 
         // Can pass arguments to command line here for debugging/running in IntelliJ
         String[] testArgs = {};

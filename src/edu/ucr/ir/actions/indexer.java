@@ -138,7 +138,8 @@ public class indexer {
                 @Override
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     try {
-                        indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
+                        //indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
+                        indexCrawlerData(writer, path, docspath);
                     } catch (IOException ignore) {
                         // don't index files that can't be read.
                     }
@@ -150,20 +151,58 @@ public class indexer {
         }
     }
 
-  //IndexWriter writer
-    public static void indexCrawlerData(String filepath) throws IOException {
+    //IndexWriter writer
+    public static void indexCrawlerData(IndexWriter writer, Path file, String filepath) throws IOException {
         // Added function to parse the JSON files, will need hooked to the right index logic (William or Jasper)
-        CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);
-        for (CrawlerPageData page: crawlerData.pages)
-        {
-            //Can access the page attrs you need
-            Document doc = new Document();
-            Field pathField = new StringField("title", page.title, Field.Store.YES);
-            System.out.println("Indexing Page Title: " + page.title);
-            //etc
-            doc.add(pathField);
+        try (InputStream stream = Files.newInputStream(file)) {
+            CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);
+            for (CrawlerPageData page : crawlerData.pages) {
+                //Can access the page attrs you need
+                Document doc = new Document();
+                Field pathField = new StringField("title", page.title, Field.Store.YES);
+                System.out.println("Indexing Page Title: " + page.title);
+                //etc
+                doc.add(pathField);
+                if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
+                    // New index, so we just add the document (no old document can be there):
+                    System.out.println("adding " + filepath);
+                    writer.addDocument(doc);
+                } else {
+                    // Existing index (an old copy of this document may have been indexed) so
+                    // we use updateDocument instead to replace the old one matching the exact
+                    // path, if present:
+                    System.out.println("updating " + filepath);
+                    writer.updateDocument(new Term("path", file.toString()), doc);
+                }
+            }
         }
+
     }
+
+
+
+
+
+    /*
+    static void indexDocs(final IndexWriter writer, Path path) throws IOException {
+        if (Files.isDirectory(path)) {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    try {
+                        indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
+                    } catch (IOException ignore) {
+                        // don't index files that can't be read.
+                    }
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } else {
+            indexDoc(writer, path, Files.getLastModifiedTime(path).toMillis());
+        }
+    }*/
+
+
 
     /*//IndexWriter writer
     public static void indexCrawlerData(String filepath) throws IOException {
