@@ -19,9 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 
-/**
- * Created by suay on 5/13/14.
- */
+
 public class LuceneIndexWriter {
 
     String indexPath = "";
