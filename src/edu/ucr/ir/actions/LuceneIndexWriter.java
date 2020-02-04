@@ -22,6 +22,7 @@ import java.util.Set;
 
 public class LuceneIndexWriter {
 
+
     String indexPath = "";
 
     String jsonFilePath = "";

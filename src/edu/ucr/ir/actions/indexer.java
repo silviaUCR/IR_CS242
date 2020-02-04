@@ -44,8 +44,8 @@ public class indexer {
         String usage = "java org.apache.lucene.demo.IndexFiles"
                 + "This indexes the documents in DOCS_PATH, creating a Lucene index"
                 + "in INDEX_PATH that can be searched with SearchFiles";
-        String indexPath = "C:\\Data Index"; //We can change this to any location
-        String docsPath = "C:\\Data Extracts"; //The output of the crawler location.
+        String indexPath = "C:\\Crawler Extract\\DaVinci_Index"; //We can change this to any location
+        String docsPath = "C:\\Crawler Extract\\DaVinci Code Wiki Page"; //The output of the crawler location.
         boolean create = true;
         for(int i=0;i<args.length;i++) {
             if ("-index".equals(args[i])) {
@@ -151,6 +151,21 @@ public class indexer {
     }
 
   //IndexWriter writer
+    public static void indexCrawlerData(String filepath) throws IOException {
+        // Added function to parse the JSON files, will need hooked to the right index logic (William or Jasper)
+        CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);
+        for (CrawlerPageData page: crawlerData.pages)
+        {
+            //Can access the page attrs you need
+            Document doc = new Document();
+            Field pathField = new StringField("title", page.title, Field.Store.YES);
+            System.out.println("Indexing Page Title: " + page.title);
+            //etc
+            doc.add(pathField);
+        }
+    }
+
+    /*//IndexWriter writer
     public static void indexCrawlerData(String filepath) throws IOException {
         // Added function to parse the JSON files, will need hooked to the right index logic (William or Jasper)
         CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);

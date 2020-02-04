@@ -34,7 +34,7 @@ public class searcher  {
             System.exit(0);
         }
 
-        String index = "C:\\Data Index";
+        String index = "C:\\Crawler Extract\\DaVinci_Index";
         String field = "contents";
         String queries = null;
         int repeat = 0;
