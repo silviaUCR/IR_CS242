@@ -95,7 +95,8 @@ public class indexer {
             // iwc.setRAMBufferSizeMB(256.0);
 
             IndexWriter writer = new IndexWriter(dir, iwc);
-            indexDocs(writer, docDir);
+            //indexDocs(writer, docDir); OLD ONE
+            indexDocs(writer, docDir, docsPath);
 
             // NOTE: if you want to maximize search performance,
             // you can optionally call forceMerge here.  This can be
@@ -132,7 +133,7 @@ public class indexer {
      147   * @throws IOException If there is a low-level I/O error
      148   */
 
-    static void indexDocs(final IndexWriter writer, Path path) throws IOException {
+    static void indexDocs(final IndexWriter writer, Path path, String docspath) throws IOException {
         if (Files.isDirectory(path)) {
             Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
                 @Override
