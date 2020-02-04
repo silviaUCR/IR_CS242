@@ -56,6 +56,24 @@ public class LuceneIndexWriter {
 
         return arrayObjects;
 
+        /* ANOTHER WAY I FOUND ONLINE TO PARSE
+        * JSONParser parser = new JSONParser();
+        JSONArray arrayObjects = (JSONArray) parser.parse(new FileReader(jsonFilePath));
+        for (Object o : arrayObjects)
+        {
+        JSONObject person = (JSONObject) o;
+
+        String name = (String) person.get(“name”);
+        System.out.println(name);
+
+        Double city = (Double) person.get(“lat”);
+        System.out.println(city);
+
+        }
+        return arrayObjects;
+        * */
+
+
     }
 
     public boolean openIndex(){
