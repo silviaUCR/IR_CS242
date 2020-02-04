@@ -12,15 +12,19 @@ import org.apache.commons.cli.ParseException;
 import edu.ucr.ir.actions.*;
 import edu.ucr.ir.data.*;
 
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         /*
             Entry-point of application
          */
         System.out.println("Starting...");
+        indexer.indexCrawlerData("testfile.json");
 
-        // Testing passing CLI a -c (crawl option)
-        String[] testArgs = {"-c"};
+        // Can pass arguments to command line here for debugging/running in IntelliJ
+        String[] testArgs = {};
+        //String[] testArgs = {"-c"};
         CommandLine results = parseArguments(testArgs);
 
         // Crawl?
@@ -28,8 +32,8 @@ public class Main {
             crawler.do_crawl(results.getArgs());
 
         // Index?
-        //if (results.hasOption('i'))
-          //  indexer.do_index(results.getArgs());
+        if (results.hasOption('i'))
+            indexer.main(results.getArgs());
 
         // Help
         if (results.hasOption('h'))

@@ -12,6 +12,10 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Date;
+
+import edu.ucr.ir.data.CrawlerData;
+import edu.ucr.ir.data.CrawlerPageData;
+import edu.ucr.ir.data.JsonUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.LongPoint;
@@ -143,6 +147,21 @@ public class indexer {
             });
         } else {
             indexDoc(writer, path, Files.getLastModifiedTime(path).toMillis());
+        }
+    }
+
+  //IndexWriter writer
+    public static void indexCrawlerData(String filepath) throws IOException {
+        // Added function to parse the JSON files, will need hooked to the right index logic (William or Jasper)
+        CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);
+        for (CrawlerPageData page: crawlerData.pages)
+        {
+            //Can access the page attrs you need
+            Document doc = new Document();
+            Field pathField = new StringField("title", page.title, Field.Store.YES);
+            System.out.println("Indexing Page Title: " + page.title);
+            //etc
+            doc.add(pathField);
         }
     }
 

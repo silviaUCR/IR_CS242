@@ -8,7 +8,6 @@ import java.lang.Math;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import  com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.core.*;
@@ -16,18 +15,25 @@ import com.fasterxml.jackson.databind.*;
 
 public class CrawlerData {
     // Constants
-    final int MAX_SIZE_MB = 100;
+    final int MAX_SIZE_MB = 16;
 
     // This is our class that represents crawler data we wish to write as a JSON file
-    ArrayList<CrawlerPageData> pages = new ArrayList<CrawlerPageData>();
-    int sizeBytes = 0;
+    public ArrayList<CrawlerPageData> pages = new ArrayList<CrawlerPageData>();
+    public int sizeBytes = 0;
+    public int pageCount = 0;
 
     public void add_page(CrawlerPageData page)
     {
         this.pages.add((page));
+        this.pageCount++;
 
         // Rough tracking of how big our data file is getting (bytes)
-        this.sizeBytes += page.url.length() + page.title.length() + page.body.length() + page.images.size()*64 + page.links.size()*64;
+        this.sizeBytes += page.url.length() + page.title.length() + page.body.length();
+        for (String image: page.images)
+            this.sizeBytes += image.length();
+        for (String link: page.links)
+            this.sizeBytes += link.length();
+        //System.out.println("Size: " + this.sizeBytes);
     }
 
     public boolean atSizeLimit()
