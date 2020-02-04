@@ -14,6 +14,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 
@@ -78,9 +79,9 @@ public class LuceneIndexWriter {
 
     public boolean openIndex(){
         try {
-            Directory dir = FSDirectory.open(new File(indexPath));
-            Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_48);
-            IndexWriterConfig iwc = new IndexWriterConfig(Version.LUCENE_48, analyzer);
+            Directory dir = FSDirectory.open(Paths.get(indexPath));
+            Analyzer analyzer = new StandardAnalyzer();
+            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
             //Always overwrite the directory
             iwc.setOpenMode(OpenMode.CREATE);
@@ -105,11 +106,7 @@ public class LuceneIndexWriter {
                 Class type = object.get(field).getClass();
                 if(type.equals(String.class)){
                     doc.add(new StringField(field, (String)object.get(field), Field.Store.NO));
-                }else if(type.equals(Long.class)){
-                    doc.add(new LongField(field, (long)object.get(field), Field.Store.YES));
-                }else if(type.equals(Double.class)){
-                    doc.add(new DoubleField(field, (double)object.get(field), Field.Store.YES));
-                }else if(type.equals(Boolean.class)){
+                } else if(type.equals(Boolean.class)){
                     doc.add(new StringField(field, object.get(field).toString(), Field.Store.YES));
                 }
             }
