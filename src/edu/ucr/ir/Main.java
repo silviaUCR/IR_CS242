@@ -31,8 +31,8 @@ public class Main {
         CommandLine results = parseArguments(testArgs);
 
         // Crawl?
-        if (results.hasOption("c"))
-            crawler.do_crawl(results.getArgs());
+        //if (results.hasOption("c"))
+            //crawler.do_crawl(results.getArgs());
 
         // Index?
         if (results.hasOption('i'))
