@@ -14,6 +14,7 @@ import org.jsoup.select.Elements;
 import edu.ucr.ir.data.*;
 
 public class crawler {
+
     final static int MAX_DEPTH = 3; //was 5, seemed a little too intense
 
     static HashMap<String, Boolean> visitedUrls = new HashMap<String, Boolean>();
@@ -56,6 +57,9 @@ public class crawler {
         try {
             // Get the document
             Document doc = Jsoup.connect(url).get();
+
+            // Parse out url
+            pageData.url = url;
 
             // Parse out page title and body text
             pageData.title = doc.title();

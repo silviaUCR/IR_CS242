@@ -18,6 +18,8 @@ import edu.ucr.ir.data.CrawlerPageData;
 import edu.ucr.ir.data.JsonUtils;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.document.Document;
@@ -75,8 +77,9 @@ public class indexer {
         try {
             System.out.println("Indexing to directory '" + indexPath + "'...");
 
+            CharArraySet stopSet = StopFilter.makeStopSet("of"); //STOPSET FILTER
             Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new StandardAnalyzer();
+            Analyzer analyzer = new StandardAnalyzer(stopSet);
             IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
 
             if (create) {
@@ -96,7 +99,7 @@ public class indexer {
             // iwc.setRAMBufferSizeMB(256.0);
 
             IndexWriter writer = new IndexWriter(dir, iwc);
-            //indexDocs(writer, docDir); OLD ONE
+            //indexDocs(writer, docDir); //OLD ONE
             indexDocs(writer, docDir, docsPath);
 
             // NOTE: if you want to maximize search performance,
@@ -141,9 +144,9 @@ public class indexer {
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     try {
                         //indexDoc(writer, file, attrs.lastModifiedTime().toMillis());
-                        indexCrawlerData(writer, path, docspath);
-                    } catch (IOException ignore) {
-                        // don't index files that can't be read.
+                        indexCrawlerData(writer, file, docspath);
+                    } catch (IOException e) {
+                        e.getMessage();
                     }
                     return FileVisitResult.CONTINUE;
                 }
@@ -153,18 +156,21 @@ public class indexer {
         }
     }
 
+
     //IndexWriter writer
     public static void indexCrawlerData(IndexWriter writer, Path file, String filepath) throws IOException {
         // Added function to parse the JSON files, will need hooked to the right index logic (William or Jasper)
         try (InputStream stream = Files.newInputStream(file)) {
             CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(filepath, CrawlerData.class);
             for (CrawlerPageData page : crawlerData.pages) {
+
                 //Can access the page attrs you need
                 Document doc = new Document();
                 Field pathField = new StringField("title", page.title, Field.Store.YES);
                 System.out.println("Indexing Page Title: " + page.title);
                 //etc
                 doc.add(pathField);
+
                 if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
                     // New index, so we just add the document (no old document can be there):
                     System.out.println("adding " + filepath);
@@ -177,6 +183,7 @@ public class indexer {
                     writer.updateDocument(new Term("path", file.toString()), doc);
                 }
             }
+                new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
         }
 
     }
