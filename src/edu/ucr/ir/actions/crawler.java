@@ -16,6 +16,7 @@ import edu.ucr.ir.data.*;
 public class crawler {
     final static int MAX_DEPTH = 3; //was 5, seemed a little too intense
 
+
     static HashMap<String, Boolean> visitedUrls = new HashMap<String, Boolean>();
     static CrawlerData crawlerData = new CrawlerData();
 
@@ -55,7 +56,8 @@ public class crawler {
         CrawlerPageData pageData = new CrawlerPageData();
         try {
             // Get the document
-            Document doc = Jsoup.connect(url).get();
+            //Document doc = Jsoup.connect(url).get();
+            Document doc = SSLHelper.getConnection(url).get();
 
             // Parse out url
             pageData.url = url;
@@ -101,5 +103,7 @@ public class crawler {
             System.out.println("Exception: " + ex.toString());
         }
     }
+    
+    
 
 }
