@@ -13,6 +13,7 @@ import edu.ucr.ir.actions.*;
 import edu.ucr.ir.data.*;
 
 import java.io.IOException;
+import java.util.function.LongUnaryOperator;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -21,6 +22,8 @@ public class Main {
          */
         System.out.println("Starting...");
         //indexer.indexCrawlerData("testfile.json");
+        LuceneIndexWriter liw = new LuceneIndexWriter(null,null);
+        liw.startIndexing();
 
         // Can pass arguments to command line here for debugging/running in IntelliJ
         String[] testArgs = {};
@@ -60,7 +63,6 @@ public class Main {
             return parser.parse(cliOptions, args);
         } catch (ParseException ex) {
             System.err.println("Error during parse: " + ex.toString());
-            //System.err.println(ex.toString());
             return null;
         }
     }

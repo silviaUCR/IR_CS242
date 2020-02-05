@@ -21,9 +21,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 
 /** Simple command-line based search demo. */
-public class searcher  {
-
-    private searcher() {}
+public class LuceneIndexReader  {
 
     /** Simple command-line based search demo. */
     public static void main(String[] args) throws Exception {

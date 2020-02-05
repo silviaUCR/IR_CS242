@@ -1,4 +1,4 @@
-package edu.ucr.ir.actions;
+package edu.ucr.ir.abandoned;
 
 import java.io.BufferedReader;
 import java.io.IOException;

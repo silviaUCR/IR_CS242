@@ -16,6 +16,7 @@ import java.util.Date;
 import edu.ucr.ir.data.CrawlerData;
 import edu.ucr.ir.data.CrawlerPageData;
 import edu.ucr.ir.data.JsonUtils;
+
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.LongPoint;
