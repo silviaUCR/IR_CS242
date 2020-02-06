@@ -108,9 +108,9 @@ public class LuceneIndexWriter {
 
         // Lucene has a limit on amount of text to index
         if (pageData.body.length() > this.MAX_BODY_CHARS)
-            doc.add(new StringField("body", pageData.body.substring(0,this.MAX_BODY_CHARS), Field.Store.YES));
+            doc.add(new TextField("body", pageData.body.substring(0,this.MAX_BODY_CHARS), Field.Store.YES));
         else
-            doc.add(new StringField("body", pageData.body, Field.Store.YES));
+            doc.add(new TextField("body", pageData.body, Field.Store.YES));
 /*
         for (String img: pageData.images)
             doc.add(new TextField("image", img, Field.Store.YES));

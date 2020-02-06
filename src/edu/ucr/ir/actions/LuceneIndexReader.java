@@ -52,5 +52,4 @@ public class LuceneIndexReader  {
         TopDocs hits = searcher.search(idQuery, 10);
         System.out.println(hits.toString());
     }
-
 }

@@ -22,7 +22,7 @@ public class Main {
         //String[] testArgs = {"-c","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-cd","4","-s","https://en.wikipedia.org/wiki/Kobe_Bryant","https://en.wikipedia.org/wiki/Mazda_RX-7"};
 
         // Sample command line for indexing
-        String[] testArgs = {"-iw","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-oi","C:\\Crawler Extract\\DaVinci_Index\\"};
+        String[] testArgs = {"-iw","-oc","C:\\Lucene\\Crawler Extract","-oi","C:\\Lucene\\Index"};
 
         CommandLine results = parseArguments(testArgs);
 
