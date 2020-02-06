@@ -71,7 +71,7 @@ public class CrawlerData {
         // Serialize and write our data
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        om.writeValue(new File(outputFolder + filename), this);
+        om.writeValue(new File(outputFolder + "\\" + filename), this);
         System.out.println("Wrote JSON to: " + filename);
     }
 }

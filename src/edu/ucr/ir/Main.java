@@ -17,12 +17,18 @@ public class Main {
             Entry-point of application
          */
         System.out.println("Starting...");
-        String[] testArgs = {};
+
+        // Sample command line for web crawler
+        //String[] testArgs = {"-c","-cd","2","-s","https://en.wikipedia.org/wiki/Apache_Lucene"};
+
+        // Sample command line for indexing
+        String[] testArgs = {"-iw","-oc","C:\\IR242_Data","-oi","C:\\IR242_Index"};
+
         CommandLine results = parseArguments(testArgs);
 
         //Manually call these here to test without worrying about the CLI stuff.
-        LuceneIndexWriter liwTest = new LuceneIndexWriter(null,null);
-        liwTest.startIndexing();
+        //LuceneIndexWriter liwTest = new LuceneIndexWriter(null,null);
+        //liwTest.startIndexing();
 
         // Crawler
         if (results.hasOption("c"))
@@ -44,8 +50,8 @@ public class Main {
         if (results.hasOption("iw"))
         {
             String indexFolder = results.getOptionValue("oi","C:\\IR242_Index");
-            String outputFolder = results.getOptionValue("oc","C:\\IR242_Data");
-            LuceneIndexWriter liw = new LuceneIndexWriter(indexFolder, outputFolder);
+            String crawlData = results.getOptionValue("oc","C:\\IR242_Data");
+            LuceneIndexWriter liw = new LuceneIndexWriter(indexFolder, crawlData);
             liw.startIndexing();
         }
 

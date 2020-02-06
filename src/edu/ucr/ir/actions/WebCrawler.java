@@ -18,22 +18,28 @@ public class WebCrawler {
     static CrawlerData crawlerData = new CrawlerData();
     static int maxCrawlDepth = 3;
 
+    // Helper class to count/time things, will autostart the timer
+    static PerformanceStats perf = new PerformanceStats();
+
     public static void do_crawl(String outputFolder, String seedUrl, int crawlDepth)
     {
         maxCrawlDepth = crawlDepth;
         if (maxCrawlDepth <= 0)
             maxCrawlDepth = 3; //some sane default
-
-        CrawlerData crawlerData = new CrawlerData();
         System.out.println("Starting crawl...");
         CrawlerPageData pageData = new CrawlerPageData();
+        perf.reset();
         crawlUrl(outputFolder, seedUrl, 0);
+        // Write last chunk of crawler data
+        if (crawlerData.pages.size() > 0)
+            crawlerData.writeJson(outputFolder);
+        System.out.println("Completed. " + perf.getString());
     }
 
     private static void crawlUrl(String outputFolder, String url, int Depth) {
 
         //Return if we're over our max crawl depth
-        if (Depth > maxCrawlDepth) return;
+        if (Depth >= maxCrawlDepth) return;
 
         // Return if we've already visited this page
         if (visitedUrls.containsKey(url)) return;
@@ -71,6 +77,7 @@ public class WebCrawler {
 
             // Add to data
             crawlerData.add_page(pageData);
+            perf.count();
 
             // Check if time to flush crawler data
             if (crawlerData.atSizeLimit())

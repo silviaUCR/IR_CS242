@@ -6,9 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import edu.ucr.ir.data.CrawlerPageData;
 import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.StopFilter;
+
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
@@ -16,9 +17,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.FSDirectory;
 
-import edu.ucr.ir.data.CrawlerData;
-import edu.ucr.ir.data.JsonUtils;
-
+import edu.ucr.ir.data.*;
 
 public class LuceneIndexWriter {
     final int MAX_BODY_CHARS = 10000;
@@ -26,23 +25,25 @@ public class LuceneIndexWriter {
     String indexPath = null;
     String dataPath = null;
     IndexWriter indexWriter = null;
+    PerformanceStats perf = new PerformanceStats();
 
     public LuceneIndexWriter(String indexPath, String dataPath) {
-        this.indexPath = indexPath != null ? indexPath : "C:\\Crawler Extract\\DaVinci_Index";
-        this.dataPath = dataPath != null ? indexPath : "C:\\Crawler Extract\\DaVinci Code Wiki Page";
+        this.indexPath = indexPath != null ? indexPath : "C:\\IR242_Index";
+        this.dataPath = dataPath != null ? dataPath : "C:\\IR242_Data";
     }
 
     public void startIndexing() throws IOException {
         // Open the index writer
 
-        if (!openIndex(this.indexPath))
+        if (!openIndex(indexPath))
         {
             System.out.println("Could not open index.");
             return;
         }
 
         // Get list of files in our data folder
-        File[] dataFiles = listFiles(this.dataPath);
+        perf.reset();
+        File[] dataFiles = listFiles(dataPath);
 
         // Iterate over each file and add them to index
         for (File file: dataFiles) {
@@ -52,6 +53,7 @@ public class LuceneIndexWriter {
 
         // Commit and close the index
         closeIndex();
+        System.out.println("Indexing complete. " + perf.getString());
     }
 
     public Boolean openIndex(String indexPath){
@@ -91,6 +93,7 @@ public class LuceneIndexWriter {
         CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(jsonFilePath, CrawlerData.class);
         for (CrawlerPageData page: crawlerData.pages) {
             this.addDocuments(page);
+            perf.count();
             System.out.println("Indexed page: " + page.title);
         }
     }
