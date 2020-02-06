@@ -10,33 +10,52 @@ import org.apache.commons.cli.ParseException;
 
 // Our packages
 import edu.ucr.ir.actions.*;
-import edu.ucr.ir.data.*;
-
-import java.io.IOException;
-import java.util.function.LongUnaryOperator;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         /*
             Entry-point of application
          */
         System.out.println("Starting...");
-        //indexer.indexCrawlerData("testfile.json");
-        LuceneIndexWriter liw = new LuceneIndexWriter(null,null);
-        liw.startIndexing();
-
-        // Can pass arguments to command line here for debugging/running in IntelliJ
         String[] testArgs = {};
-        //String[] testArgs = {"-c"};
         CommandLine results = parseArguments(testArgs);
 
-        // Crawl?
-        //if (results.hasOption("c"))
-            //crawler.do_crawl(results.getArgs());
+        //Manually call these here to test without worrying about the CLI stuff.
+        LuceneIndexWriter liwTest = new LuceneIndexWriter(null,null);
+        liwTest.startIndexing();
 
-        // Index?
-        if (results.hasOption('i'))
-            indexer.main(results.getArgs());
+        // Crawler
+        if (results.hasOption("c"))
+        {
+            String[] seedUrls = {};
+            // Output folder
+            String outputFolder = results.getOptionValue("oc","C:\\IR242_Data");
+            // Crawler depth
+            int crawlDepth = 3;
+            crawlDepth = Integer.parseInt(results.getOptionValue("cd"));
+            // Seed URLS
+            String seedUrl = "";
+            if (results.hasOption("s"))
+                seedUrl = results.getOptionValue("s","https://en.wikipedia.org/wiki/Apache_Lucene");
+            WebCrawler.do_crawl(outputFolder, seedUrl, crawlDepth);
+        }
+
+        // IndexWriter
+        if (results.hasOption("iw"))
+        {
+            String indexFolder = results.getOptionValue("oi","C:\\IR242_Index");
+            String outputFolder = results.getOptionValue("oc","C:\\IR242_Data");
+            LuceneIndexWriter liw = new LuceneIndexWriter(indexFolder, outputFolder);
+            liw.startIndexing();
+        }
+
+        // IndexReader
+        if (results.hasOption("ir"))
+        {
+            String indexFolder = results.getOptionValue("oi","C:\\IR242_Index");
+            String searchTerm =  results.getOptionValue("t","no-search-term-defined");
+            LuceneIndexReader.doSearch(indexFolder, searchTerm);
+        }
 
         // Help
         if (results.hasOption('h'))
@@ -48,8 +67,13 @@ public class Main {
         var options = new Options();
         options.addOption("c", "crawl", false, "Crawl Mode");
         options.addOption("h", "help", false, "Show Help");
-        options.addOption("i", "index", false, "Index Mode");
+        options.addOption("ir", "indexRead", false, "Index Read Mode");
+        options.addOption("iw", "indexWrite", false, "Index Write Mode");
+        options.addOption("s", "seed", true, "Seed Url");
+        options.addOption("t", "term", true, "Search Term");
         options.addOption("cd", "crawlDepth", true, "Max crawl depth (default 5)");
+        options.addOption("oc", "crawlData", true, "Crawler Output Folder");
+        options.addOption("oi", "indexData", true, "Index Folder");
         return options;
     }
 

@@ -50,7 +50,7 @@ public class CrawlerData {
 
     // These functions write the data to a JSON file, there are two functions of same name, but different parameters
     // This is called overloading, it allows user to specify a filename or not
-    public void writeJson()
+    public void writeJson(String outputFolder)
     {
         // No filename, specified, generate one
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd-HHmmss");
@@ -58,7 +58,7 @@ public class CrawlerData {
         generatedName += ".json";
         try
         {
-            writeJson(generatedName);
+            writeJson(outputFolder, generatedName);
         }
         catch (IOException ex)
         {
@@ -67,11 +67,11 @@ public class CrawlerData {
 
     }
 
-    public void writeJson(String filename) throws IOException {
+    public void writeJson(String outputFolder, String filename) throws IOException {
         // Serialize and write our data
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
-        om.writeValue(new File(filename), this);
+        om.writeValue(new File(outputFolder + filename), this);
         System.out.println("Wrote JSON to: " + filename);
     }
 }

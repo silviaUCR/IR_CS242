@@ -13,41 +13,27 @@ import org.jsoup.select.Elements;
 
 import edu.ucr.ir.data.*;
 
-public class crawler {
-    final static int MAX_DEPTH = 3; //was 5, seemed a little too intense
-
-
+public class WebCrawler {
     static HashMap<String, Boolean> visitedUrls = new HashMap<String, Boolean>();
     static CrawlerData crawlerData = new CrawlerData();
+    static int maxCrawlDepth = 3;
 
-    public static void do_crawl(String[] args)
+    public static void do_crawl(String outputFolder, String seedUrl, int crawlDepth)
     {
-        // Root of crawler logic
+        maxCrawlDepth = crawlDepth;
+        if (maxCrawlDepth <= 0)
+            maxCrawlDepth = 3; //some sane default
 
-        // This is one chuck of crawler data (one file)
         CrawlerData crawlerData = new CrawlerData();
-
-        //TODO: Hashmap to track pages already crawled
-
         System.out.println("Starting crawl...");
-        // Root or seed URLs to start crawling...
-        //"https://en.wikipedia.org/wiki/Criticism_of_The_Da_Vinci_Code" - did this already
-        String[] seedUrls = {
-                "https://medium.com/@autumnturpin/surviving-grad-school-with-your-mental-health-intact-fcd8d3839d10",
-                "https://en.wikipedia.org/wiki/Kobe_Bryant",
-        };
-
         CrawlerPageData pageData = new CrawlerPageData();
-        for (String url: seedUrls)
-        {
-            crawlUrl(url, 0);
-        }
+        crawlUrl(outputFolder, seedUrl, 0);
     }
 
-    private static void crawlUrl(String url, int Depth) {
+    private static void crawlUrl(String outputFolder, String url, int Depth) {
 
         //Return if we're over our max crawl depth
-        if (Depth > MAX_DEPTH) return;
+        if (Depth > maxCrawlDepth) return;
 
         // Return if we've already visited this page
         if (visitedUrls.containsKey(url)) return;
@@ -56,8 +42,7 @@ public class crawler {
         CrawlerPageData pageData = new CrawlerPageData();
         try {
             // Get the document
-            //Document doc = Jsoup.connect(url).get();
-            Document doc = SSLHelper.getConnection(url).get();
+            Document doc = Jsoup.connect(url).get();
 
             // Parse out url
             pageData.url = url;
@@ -89,21 +74,19 @@ public class crawler {
             // Check if time to flush crawler data
             if (crawlerData.atSizeLimit())
             {
-                crawlerData.writeJson();
+                crawlerData.writeJson(outputFolder);
                 crawlerData.flush();
             }
 
             // Crawl links in the page
             for (String childPage: pageData.links)
             {
-                crawlUrl(childPage, (Depth + 1));
+                crawlUrl(outputFolder, childPage, (Depth + 1));
             }
         }
         catch(IOException ex) {
             System.out.println("Exception: " + ex.toString());
         }
     }
-    
-    
 
 }
