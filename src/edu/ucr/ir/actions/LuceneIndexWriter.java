@@ -1,23 +1,22 @@
 package edu.ucr.ir.actions;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 import edu.ucr.ir.data.CrawlerPageData;
-import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
+import org.apache.lucene.analysis.StopFilter;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
-import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 import edu.ucr.ir.data.CrawlerData;
-import edu.ucr.ir.data.CrawlerPageData;
 import edu.ucr.ir.data.JsonUtils;
 
 
@@ -57,9 +56,27 @@ public class LuceneIndexWriter {
 
     public Boolean openIndex(String indexPath){
         try {
+            //Begining of StopWord Filter
+            String token1 = "";
+            Scanner inFile1 = new Scanner(new File("StopWordList.txt")).useDelimiter("\\n");
+            // Using ArrayList
+            List<String> list = new ArrayList<String>();
+            // while loop to iterate through file
+            while (inFile1.hasNext()) {
+                // find next line
+                token1 = inFile1.next();
+                list.add(token1);
+            }
+            inFile1.close();
+            //Convert to string array to pass to stopwords
+            String[] array = list.toArray(new String[list.size()]);
+            CharArraySet stopSet = StopFilter.makeStopSet(array);
+            //End of StopWord Filter Remove stopSet from Analyzer to undo
+
             System.out.println("Opening index at path: " + indexPath);
             FSDirectory dir = FSDirectory.open(Paths.get(indexPath));
-            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+
+            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer(stopSet));
             config.setOpenMode(OpenMode.CREATE);
             this.indexWriter = new IndexWriter(dir, config);
             System.out.println("Indexed opened.");
