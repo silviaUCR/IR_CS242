@@ -28,8 +28,8 @@ public class LuceneIndexWriter {
     IndexWriter indexWriter = null;
 
     public LuceneIndexWriter(String indexPath, String dataPath) {
-        this.indexPath = indexPath != null ? indexPath : "C:\\IR242_Index";
-        this.dataPath = dataPath != null ? indexPath : "C:\\IR242_Data";
+        this.indexPath = indexPath != null ? indexPath : "C:\\Crawler Extract\\DaVinci_Index";
+        this.dataPath = dataPath != null ? indexPath : "C:\\Crawler Extract\\DaVinci Code Wiki Page";
     }
 
     public void startIndexing() throws IOException {
