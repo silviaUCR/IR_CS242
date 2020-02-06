@@ -19,16 +19,17 @@ public class Main {
         System.out.println("Starting...");
 
         // Sample command line for web crawler
-        //String[] testArgs = {"-c","-cd","2","-s","https://en.wikipedia.org/wiki/Apache_Lucene"};
+        String[] testArgs = {"-c","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-cd","2","-s","https://en.wikipedia.org/wiki/Kobe_Bryant"};
 
         // Sample command line for indexing
-        String[] testArgs = {"-iw","-oc","C:\\IR242_Data","-oi","C:\\IR242_Index"};
+        //String[] testArgs = {"-iw","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-oi","C:\\Crawler Extract\\DaVinci_Index\\"};
 
         CommandLine results = parseArguments(testArgs);
 
         //Manually call these here to test without worrying about the CLI stuff.
         //LuceneIndexWriter liwTest = new LuceneIndexWriter(null,null);
         //liwTest.startIndexing();
+
 
         // Crawler
         if (results.hasOption("c"))

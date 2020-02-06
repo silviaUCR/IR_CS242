@@ -29,8 +29,9 @@ public class CrawlerData {
 
         // Rough tracking of how big our data file is getting (bytes)
         this.sizeBytes += page.url.length() + page.title.length() + page.body.length();
+        /*
         for (String image: page.images)
-            this.sizeBytes += image.length();
+            this.sizeBytes += image.length();*/
         for (String link: page.links)
             this.sizeBytes += link.length();
         //System.out.println("Size: " + this.sizeBytes);
