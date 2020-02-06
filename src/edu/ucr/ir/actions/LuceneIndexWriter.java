@@ -113,9 +113,9 @@ public class LuceneIndexWriter {
             doc.add(new StringField("body", pageData.body, Field.Store.YES));
 /*
         for (String img: pageData.images)
-            doc.add(new TextField("image", img, Field.Store.YES));*/
+            doc.add(new TextField("image", img, Field.Store.YES));
         for (String link: pageData.links)
-            doc.add(new TextField("image", link, Field.Store.YES));
+            doc.add(new TextField("image", link, Field.Store.YES));*/
         try {
             this.indexWriter.addDocument(doc);
         } catch (IOException ex) {
