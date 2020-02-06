@@ -10,12 +10,12 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="org.jsoup:jsoup:1.12.1" level="project" />
     <orderEntry type="library" name="commons-cli:commons-cli:1.4" level="project" />
-    <orderEntry type="library" name="org.apache.lucene:lucene-core:8.4.1" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-core:2.8.4" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-databind:2.8.4" level="project" />
     <orderEntry type="library" name="com.fasterxml.jackson.core:jackson-annotations:2.8.4" level="project" />
-    <orderEntry type="library" name="org.apache.lucene:lucene-queryparser:8.4.1" level="project" />
     <orderEntry type="library" name="json-simple-1.1" level="project" />
     <orderEntry type="library" name="com.googlecode.json-simple:json-simple:1.1.1" level="project" />
+    <orderEntry type="library" name="org.apache.lucene:lucene-core:7.1.0" level="project" />
+    <orderEntry type="library" name="org.apache.lucene:lucene-queryparser:7.1.0" level="project" />
   </component>
 </module>

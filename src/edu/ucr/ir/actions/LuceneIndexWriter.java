@@ -4,9 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
-import java.util.List;
-import java.util.Set;
 
 import edu.ucr.ir.data.CrawlerPageData;
 import org.apache.lucene.analysis.Analyzer;
@@ -18,10 +15,6 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Version;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 
 import edu.ucr.ir.data.CrawlerData;
 import edu.ucr.ir.data.CrawlerPageData;
@@ -42,7 +35,12 @@ public class LuceneIndexWriter {
 
     public void startIndexing() throws IOException {
         // Open the index writer
-        openIndex(this.indexPath);
+
+        if (!openIndex(this.indexPath))
+        {
+            System.out.println("Could not open index.");
+            return;
+        }
 
         // Get list of files in our data folder
         File[] dataFiles = listFiles(this.dataPath);
@@ -59,14 +57,11 @@ public class LuceneIndexWriter {
 
     public Boolean openIndex(String indexPath){
         try {
-            Directory dir = FSDirectory.open(Paths.get(indexPath));
-            Analyzer analyzer = new StandardAnalyzer();
-            IndexWriterConfig iwc = new IndexWriterConfig(analyzer);
-
-            //Always overwrite the directory
-            iwc.setOpenMode(OpenMode.CREATE);
             System.out.println("Opening index at path: " + indexPath);
-            this.indexWriter = new IndexWriter(dir, iwc);
+            FSDirectory dir = FSDirectory.open(Paths.get(indexPath));
+            IndexWriterConfig config = new IndexWriterConfig(new StandardAnalyzer());
+            config.setOpenMode(OpenMode.CREATE);
+            this.indexWriter = new IndexWriter(dir, config);
             System.out.println("Indexed opened.");
             return true;
         } catch (Exception e) {
@@ -78,7 +73,8 @@ public class LuceneIndexWriter {
     public void parseJson(String jsonFilePath) throws IOException {
         CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(jsonFilePath, CrawlerData.class);
         for (CrawlerPageData page: crawlerData.pages) {
-            addDocuments(page);
+            this.addDocuments(page);
+            System.out.println("Indexed page: " + page.title);
         }
     }
 
