@@ -59,13 +59,13 @@ public class WebCrawler {
             pageData.body = doc.body().text();
 
             // Parse out image data
-            pageData.images = new ArrayList<String>();
+           /* pageData.images = new ArrayList<String>();
             Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");
             for (Element image: images)
             {
                 String imageData = image.attr("src") + ";" + image.attr("alt");
                 pageData.images.add(imageData);
-            }
+            }*/
 
             // Parse links
             pageData.links = new ArrayList<String>();
