@@ -42,7 +42,8 @@ public class WebCrawler {
         CrawlerPageData pageData = new CrawlerPageData();
         try {
             // Get the document
-            Document doc = Jsoup.connect(url).get();
+            //Document doc = Jsoup.connect(url).get();
+            Document doc = SSLHelper.getConnection(url).get();
 
             // Parse out url
             pageData.url = url;
