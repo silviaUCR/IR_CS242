@@ -62,6 +62,22 @@ public class WebCrawler {
             pageData.title = doc.title();
             pageData.body = doc.body().text();
 
+            // Metadata
+            String metaDescription = "";
+            try {
+                metaDescription = doc.select("meta[name=description]").get(0).attr("content");
+            }
+            catch (Exception e) {}
+
+            String metaKeywords = "";
+            try {
+                metaKeywords = doc.select("meta[name=keywords]").first().attr("content");
+            }
+            catch (Exception e) {}
+
+            pageData.metaDescription = metaDescription;
+            pageData.metaKeywords = metaKeywords;
+
             // Parse out image data
            /* pageData.images = new ArrayList<String>();
             Elements images = doc.select("img[src~=(?i)\\.(png|jpe?g|gif)]");

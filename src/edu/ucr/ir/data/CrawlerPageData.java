@@ -7,6 +7,8 @@ public class CrawlerPageData {
     public String url;
     public String title;
     public String body;
+    public String metaDescription;
+    public String metaKeywords;
     public ArrayList<String> links;
     public ArrayList<String> images;
     public Date indexedOn;
