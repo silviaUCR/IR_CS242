@@ -53,7 +53,7 @@ public class WebCrawler {
         try {
             // Get the document
             //Document doc = Jsoup.connect(url).get();
-            Document doc = SSLHelper.getConnection(url).get();
+            Document doc = SSLHelper.getConnection(url).userAgent("Chrome 80.0.3987.87").get();
 
             // Parse out url
             pageData.url = url;
