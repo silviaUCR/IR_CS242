@@ -68,19 +68,17 @@ public class LuceneIndexWriter {
         try {
             //Begining of StopWord Filter
             String token1 = "";
-            Scanner inFile1 = new Scanner(new File("StopWordList.txt")).useDelimiter("\\n");
+            Scanner inFile1 = new Scanner(new File("StopWordList.txt")).useDelimiter("\r\n");
             // Using ArrayList
-            List<String> list = new ArrayList<String>();
-            // while loop to iterate through file
+            List<String> listStopWords = new ArrayList<String>();
+            // Read each line in the text file into a list
             while (inFile1.hasNext()) {
-                // find next line
-                token1 = inFile1.next();
-                list.add(token1);
+                listStopWords.add(inFile1.next());
             }
             inFile1.close();
+
             //Convert to string array to pass to stopwords
-            String[] array = list.toArray(new String[list.size()]);
-            CharArraySet stopSet = StopFilter.makeStopSet(array);
+            CharArraySet stopSet = StopFilter.makeStopSet(listStopWords.toArray(new String[0]));
             //End of StopWord Filter Remove stopSet from Analyzer to undo
 
             System.out.println("Opening index at path: " + indexPath);
