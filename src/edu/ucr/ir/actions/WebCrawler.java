@@ -12,31 +12,35 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import edu.ucr.ir.data.*;
-
 public class WebCrawler {
     static HashMap<String, Boolean> visitedUrls = new HashMap<String, Boolean>();
     static CrawlerData crawlerData = new CrawlerData();
+    static String dataFolder = "";
+    static String seedUrl = "";
+
     static int maxCrawlDepth = 3;
 
     // Helper class to count/time things, will autostart the timer
     static PerformanceStats perf = new PerformanceStats();
 
-    public static void do_crawl(String outputFolder, String seedUrl, int crawlDepth)
+    public static void do_crawl(String outputFolder, String seed, int crawlDepth)
     {
         maxCrawlDepth = crawlDepth;
         if (maxCrawlDepth <= 0)
             maxCrawlDepth = 3; //some sane default
+        dataFolder = outputFolder;
+        seedUrl = seed;
         System.out.println("Starting crawl...");
         CrawlerPageData pageData = new CrawlerPageData();
         perf.reset();
-        crawlUrl(outputFolder, seedUrl, 0);
+        crawlUrl(seedUrl, 0);
         // Write last chunk of crawler data
         if (crawlerData.pages.size() > 0)
             crawlerData.writeJson(outputFolder);
         System.out.println("Completed. " + perf.getString());
     }
 
-    private static void crawlUrl(String outputFolder, String url, int Depth) {
+    static void crawlUrl(String url, int Depth) {
 
         //Return if we're over our max crawl depth
         if (Depth >= maxCrawlDepth) return;
@@ -82,14 +86,14 @@ public class WebCrawler {
             // Check if time to flush crawler data
             if (crawlerData.atSizeLimit())
             {
-                crawlerData.writeJson(outputFolder);
+                crawlerData.writeJson(dataFolder);
                 crawlerData.flush();
             }
 
             // Crawl links in the page
             for (String childPage: pageData.links)
             {
-                crawlUrl(outputFolder, childPage, (Depth + 1));
+                crawlUrl(childPage, (Depth + 1));
             }
         }
         catch(IOException ex) {

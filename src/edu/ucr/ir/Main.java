@@ -13,23 +13,17 @@ import edu.ucr.ir.actions.*;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        /*
-            Entry-point of application
-         */
+        // Entry-point of application
         System.out.println("Starting...");
 
-        // Sample command line for web crawler
+        // Our test args (your PC may be different, just add your own and comment out before commit
+        //String[] testArgs = {"-iw","-oc","C:\\IR242_Data","-oi","C:\\IR242_Index"};
         //String[] testArgs = {"-c","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-cd","4","-s","https://en.wikipedia.org/wiki/Kobe_Bryant","https://en.wikipedia.org/wiki/Mazda_RX-7"};
+        //String[] testArgs = {"-iw","-oc","C:\\Lucene\\Crawler Extract","-oi","C:\\Lucene\\Index"};
+        String[] testArgs = {};
 
-        // Sample command line for indexing
-        String[] testArgs = {"-iw","-oc","C:\\Lucene\\Crawler Extract","-oi","C:\\Lucene\\Index"};
-
+        // Parse command-line arguments
         CommandLine results = parseArguments(testArgs);
-
-        //Manually call these here to test without worrying about the CLI stuff.
-        //LuceneIndexWriter liwTest = new LuceneIndexWriter(null,null);
-        //liwTest.startIndexing();
-
 
         // Crawler
         if (results.hasOption("c"))
@@ -54,6 +48,7 @@ public class Main {
             String crawlData = results.getOptionValue("oc","C:\\IR242_Data");
             LuceneIndexWriter liw = new LuceneIndexWriter(indexFolder, crawlData);
             liw.startIndexing();
+            return;
         }
 
         // IndexReader
@@ -62,11 +57,11 @@ public class Main {
             String indexFolder = results.getOptionValue("oi","C:\\IR242_Index");
             String searchTerm =  results.getOptionValue("t","no-search-term-defined");
             LuceneIndexReader.doSearch(indexFolder, searchTerm);
+            return;
         }
 
-        // Help
-        if (results.hasOption('h'))
-            printHelp();
+        // Help is default
+        printHelp();
     }
 
     private static Options buildOptions()

@@ -1,10 +1,10 @@
 package edu.ucr.ir.data;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.io.File;
 import java.io.IOException;
-
 import java.lang.Math;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +22,7 @@ public class CrawlerData {
     public int sizeBytes = 0;
     public int pageCount = 0;
 
-    public void add_page(CrawlerPageData page)
+    public synchronized void add_page(CrawlerPageData page)
     {
         this.pages.add((page));
         this.pageCount++;
@@ -37,12 +37,12 @@ public class CrawlerData {
         //System.out.println("Size: " + this.sizeBytes);
     }
 
-    public boolean atSizeLimit()
+    public synchronized boolean atSizeLimit()
     {
         return (this.sizeBytes >= MAX_SIZE_MB * (Math.pow(1024,2)));
     }
 
-    public void flush()
+    public synchronized void flush()
     {
         // Erase all data
         this.pages.clear();
@@ -51,7 +51,7 @@ public class CrawlerData {
 
     // These functions write the data to a JSON file, there are two functions of same name, but different parameters
     // This is called overloading, it allows user to specify a filename or not
-    public void writeJson(String outputFolder)
+    public synchronized void writeJson(String outputFolder)
     {
         // No filename, specified, generate one
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd-HHmmss");
@@ -68,7 +68,7 @@ public class CrawlerData {
 
     }
 
-    public void writeJson(String outputFolder, String filename) throws IOException {
+    public synchronized void writeJson(String outputFolder, String filename) throws IOException {
         // Serialize and write our data
         ObjectMapper om = new ObjectMapper();
         om.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);

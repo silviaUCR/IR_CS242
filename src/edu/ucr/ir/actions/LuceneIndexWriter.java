@@ -24,6 +24,7 @@ public class LuceneIndexWriter {
 
     String indexPath = null;
     String dataPath = null;
+    StringBuilder sbStats = new StringBuilder();
     IndexWriter indexWriter = null;
     PerformanceStats perf = new PerformanceStats();
 
@@ -33,8 +34,11 @@ public class LuceneIndexWriter {
     }
 
     public void startIndexing() throws IOException {
-        // Open the index writer
+        // Init the stringbuilder of stats
+        sbStats.setLength(0); //Effectively erases buffer
+        sbStats.append("elapsedMS,pageCount" + System.lineSeparator());
 
+        // Open the index writer
         if (!openIndex(indexPath))
         {
             System.out.println("Could not open index.");
@@ -50,10 +54,14 @@ public class LuceneIndexWriter {
             System.out.println("Parsing JSON file: " + file.getName());
             parseJson(file.getAbsolutePath());
         }
+        sbStats.append(perf.getCSV() + System.lineSeparator()); //one last capture
 
         // Commit and close the index
         closeIndex();
         System.out.println("Indexing complete. " + perf.getString());
+
+        // Print the stats
+        System.out.println(sbStats.toString());
     }
 
     public Boolean openIndex(String indexPath){
@@ -93,7 +101,14 @@ public class LuceneIndexWriter {
         CrawlerData crawlerData = (CrawlerData) JsonUtils.readJsonFromFile(jsonFilePath, CrawlerData.class);
         for (CrawlerPageData page: crawlerData.pages) {
             this.addDocuments(page);
-            perf.count();
+            long count = perf.count();
+
+            // Every 1-second, let's capture stats
+            if (perf.peekLapMilli() >= 1000)
+            {
+                sbStats.append(perf.getCSV() + System.lineSeparator());
+                perf.getLapMilli(); //Reset lap timer
+            }
             System.out.println("Indexed page: " + page.title);
         }
     }

@@ -38,9 +38,14 @@ public class PerformanceStats {
         return result;
     }
 
-    public void count()
+    public long peekLapMilli()
     {
-        counts++;
+        return  Duration.between(lap, Instant.now()).toMillis();
+    }
+
+    public long count()
+    {
+        return counts++;
     }
 
     public long getCount()
@@ -56,8 +61,12 @@ public class PerformanceStats {
     public String getString()
     {
         // Returns a string with the summary
-        long totalCount = getCount();
-        long elapsed = totalElapsedMilli();
         return String.format("Processed %d records in %d ms", getCount(), totalElapsedMilli());
+    }
+
+    public String getCSV()
+    {
+        // Returns elapsed,count
+        return String.format("%d,%d", totalElapsedMilli(), getCount());
     }
 }
