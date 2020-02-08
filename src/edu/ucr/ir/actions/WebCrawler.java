@@ -48,7 +48,7 @@ public class WebCrawler {
         // Return if we've already visited this page
         if (visitedUrls.containsKey(url)) return;
         visitedUrls.put(url,true);
-        System.out.println("("+ crawlerData.pageCount + ")" + url + "...");
+        System.out.println(String.format("(%s:%s) %s", crawlerData.pageCount, Depth, url));
         CrawlerPageData pageData = new CrawlerPageData();
         try {
             // Get the document

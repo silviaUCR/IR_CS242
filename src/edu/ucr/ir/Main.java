@@ -11,25 +11,29 @@ import org.apache.commons.cli.ParseException;
 // Our packages
 import edu.ucr.ir.actions.*;
 
+import javax.swing.*;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         // Entry-point of application
         System.out.println("Starting...");
-
         // Our test args (your PC may be different, just add your own and comment out before commit
         //String[] testArgs = {"-iw","-oc","C:\\IR242_Data","-oi","C:\\IR242_Index"};
         //String[] testArgs = {"-c","-oc","C:\\IR242_Data","-cd","2","-s","https://en.wikipedia.org/wiki/Kobe_Bryant","https://en.wikipedia.org/wiki/Mazda_RX-7"};
-        String[] testArgs = {"-c","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-cd","4","-s","https://en.wikipedia.org/wiki/Kobe_Bryant","https://en.wikipedia.org/wiki/Mazda_RX-7"};
+        //String[] testArgs = {"-c","-oc","C:\\Crawler Extract\\DaVinci Code Wiki Page\\","-cd","4","-s","https://en.wikipedia.org/wiki/Kobe_Bryant","https://en.wikipedia.org/wiki/Mazda_RX-7"};
         //String[] testArgs = {"-iw","-oc","C:\\Lucene\\Crawler Extract","-oi","C:\\Lucene\\Index"};
-        //String[] testArgs = {};
+        String[] testArgs = {};
 
         // Parse command-line arguments
-        CommandLine results = parseArguments(testArgs);
+        CommandLine results;
+        if (testArgs.length > 0)
+            results = parseArguments(testArgs);
+        else
+            results = parseArguments(args);
 
         // Crawler
         if (results.hasOption("c"))
         {
-            String[] seedUrls = {};
             // Output folder
             String outputFolder = results.getOptionValue("oc","C:\\IR242_Data");
             // Crawler depth
