@@ -236,7 +236,7 @@ public class MapReduce {
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
 				}*/
-				word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
+				word_url_key.set("key");  //creates the key
 				value.set("1");  //creates the value. 1 is just a dummy variable
 				context.write(word_url_key, value);
 			}
