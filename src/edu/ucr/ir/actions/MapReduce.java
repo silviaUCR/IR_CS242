@@ -206,8 +206,8 @@ public class MapReduce {
 
 		private static final String fileTag = "INDEX~";
 		private static final String MR_DATA_SEPARATOR = "\t";
-		private static final String WEBPAGE_DS = "url";
-		private static final String BODY_DS = "body";
+		private static final String WEBPAGE_DS = "\"url\":\"";
+		private static final String BODY_DS = "\"body\":\"";
 		private static final String WORD_DS = " ";
 
 		public void map(Text key, Text value, Context context
@@ -217,7 +217,7 @@ public class MapReduce {
 
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
-/*
+
 			for (String webpage : webpages){
 				String body[] = webpage.split(BODY_DS);
 				String body_1[] = body[1].split("links");
@@ -234,9 +234,7 @@ public class MapReduce {
 					word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
-				}*/
-
-			context.write("word_url_key", "value");
+				}
 			}
 
 		}
@@ -531,7 +529,7 @@ public class MapReduce {
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
     
-    FileOutputFormat.setOutputPath(job, new Path(out));
+    FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
@@ -546,7 +544,7 @@ public class MapReduce {
     job2.setMapOutputValueClass(Text.class);
     job2.setOutputKeyClass(Text.class);
     job2.setOutputValueClass(Text.class);
-    FileOutputFormat.setOutputPath(job2, new Path(out));
+    FileOutputFormat.setOutputPath(job2, new Path(out, "out2"));
     
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
