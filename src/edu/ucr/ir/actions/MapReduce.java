@@ -217,11 +217,10 @@ public class MapReduce {
 
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
-			word_url_key.set("key");
-			value.set("1");
-/*
-			for (String webpage : webpages){
-				String body[] = webpage.split(BODY_DS);
+
+
+			for (String webpage : webpages) {
+	/*			String body[] = webpage.split(BODY_DS);
 				String body_1[] = body[1].split("links");
 				String body_dirty = body_1[0];
 				String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
@@ -237,8 +236,10 @@ public class MapReduce {
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
 				}
-			}*/
-			context.write(word_url_key, value);
+			}*/ word_url_key.set("key");
+				value.set("1");
+				context.write(word_url_key, value);
+			}
 		}
 	}
 
