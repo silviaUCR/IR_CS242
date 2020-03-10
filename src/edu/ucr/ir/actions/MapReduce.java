@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
+import java.util.regex.*;
 import java.math.RoundingMode;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -220,13 +221,22 @@ public class MapReduce {
 			String webpages[] = line.split(WEBPAGE_DS);
 
 			for (String webpage : webpages){
-				String bodies[] = webpage.split(BODY_DS);
-				for (String body : bodies) {
+				final Pattern pattern = Pattern.compile("\"url\":\"(.+?)\"", Pattern.DOTALL);
+				final Matcher matcher = pattern.matcher("\"url\":\"" + webpage + "\"");
+				matcher.find();
+				String url = matcher.group(1);
+				final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\"", Pattern.DOTALL);
+				final Matcher bodymatcher = bodypattern.matcher("\"body\":\"" + webpage + "\"");
+				bodymatcher.find();
+				String body = bodymatcher.group(1);
+				//String bodies[] = webpage.split(BODY_DS);
+				/*for (String body : bodies) {
+					String body_1[] = body.split(LINK_DS);
 					word_url_key.set("key");  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
-				}
-				String body_1[] = body[1].split(LINK_DS);
+				}*/
+				//
 				//String body_dirty = body[1];
 				//String body_dirty = body_1[0];
 				//String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
@@ -243,6 +253,10 @@ public class MapReduce {
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
 				}*/
+
+				word_url_key.set(url);  //creates the key
+				value.set("1");  //creates the value. 1 is just a dummy variable
+				context.write(word_url_key, value);
 
 			}
 
