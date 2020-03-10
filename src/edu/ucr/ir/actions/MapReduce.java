@@ -224,11 +224,11 @@ public class MapReduce {
 				String body_1[] = body[1].split(LINK_DS);
 				String body_dirty = body[1];
 				//String body_dirty = body_1[0];
-				String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
+				//String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
 				String body_clean = body_dirty;
-				for(String[] replacement: sp_chr_to_blk) {
-					body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
-				}
+				//for(String[] replacement: sp_chr_to_blk) {
+					//body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
+				//}
 				String urls[] = webpage.split("\"");
 				String url_final = urls[0];
 				String words[] = body_clean.split(WORD_DS);
