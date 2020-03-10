@@ -521,7 +521,7 @@ public class MapReduce {
     Path out = new Path(args[1]);
   
     Job job = Job.getInstance(conf, "create posting with tf");
-    job.setJarByClass(InvertedIndex.class);
+    job.setJarByClass(MapReduce.class);
     MultipleInputs.addInputPath(job, new Path(args[0]), CustomInputFormat.class, MapPosting.class);
     job.setReducerClass(ReducePosting.class);
     job.setMapOutputKeyClass(Text.class);
@@ -537,7 +537,7 @@ public class MapReduce {
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
   
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
-    job2.setJarByClass(InvertedIndex.class);
+    job2.setJarByClass(MapReduce.class);
     MultipleInputs.addInputPath(job2, new Path(out, "out1"), CustomInputFormat.class, MapInvertedIndex.class);
     job2.setReducerClass(ReduceInvertedIndex.class);
     job2.setMapOutputKeyClass(Text.class);
@@ -554,7 +554,7 @@ public class MapReduce {
 
 
     Job job3 = Job.getInstance(conf, "temp agg final");
-    job3.setJarByClass(InvertedIndex.class);
+    job3.setJarByClass(MapReduce.class);
     MultipleInputs.addInputPath(job3, new Path(out, "out2"), CustomInputFormat.class, MapAverage.class);
     job3.setReducerClass(MaxMinReduce.class);
     job3.setMapOutputKeyClass(Text.class);
@@ -570,7 +570,7 @@ public class MapReduce {
     //--------START CHAIN MAP REDUCE JOB(4)---------------------//
 
     Job job4 = Job.getInstance(conf, "temp agg sort");
-    job4.setJarByClass(InvertedIndex.class);
+    job4.setJarByClass(MapReduce.class);
     //MultipleInputs.addInputPath(job4, new Path(args[0]), CustomInputFormat.class, SortMaxMin.class); //TESTING PURPOSES
     MultipleInputs.addInputPath(job4, new Path(out, "out3"), CustomInputFormat.class, SortMaxMin.class);
     job4.setReducerClass(ReduceSort.class);
