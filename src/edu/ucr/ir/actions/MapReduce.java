@@ -222,8 +222,11 @@ public class InvertedIndex {
 				String body[] = webpage.split(BODY_DS);
 				String body_1[] = body[1].split("\"links\":[\"");
 				String body_dirty = body_1[0];
-				String body_clean = body_dirty.replace(",", "\"", "\\", "\'", ":");
-
+				String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
+				String body_clean = body_dirty;
+				for(String[] replacement: sp_chr_to_blk) {
+					body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
+				}
 				String urls[] = webpage.split("\"");
 				String url_final = urls[0];
 				String words[] = body_clean.split(WORD_DS);
@@ -261,7 +264,7 @@ public class InvertedIndex {
 				count += 1;
 			}
 
-			posting = count;
+			posting = count.toString();
 			datakey = word_url;
 			context.write(new Text(datakey), new Text(posting));
 
