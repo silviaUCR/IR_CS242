@@ -206,9 +206,9 @@ public class MapReduce {
 
 		private static final String fileTag = "INDEX~";
 		private static final String MR_DATA_SEPARATOR = "\t";
-		private static final String WEBPAGE_DS = "\"url\":\"";
-		private static final String BODY_DS = "\"body\":\"";
-		private static final String LINK_DS = "\"links\":[\"";
+		private static final String WEBPAGE_DS = "\"url\"";
+		private static final String BODY_DS = "\"body\":";
+		private static final String LINK_DS = "\"links\"";
 		private static final String WORD_DS = " ";
 
 		public void map(Text key, Text value, Context context
