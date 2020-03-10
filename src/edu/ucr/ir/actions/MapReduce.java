@@ -217,7 +217,7 @@ public class MapReduce {
 
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
-
+/*
 			for (String webpage : webpages){
 				String body[] = webpage.split(BODY_DS);
 				String body_1[] = body[1].split("links");
@@ -235,8 +235,8 @@ public class MapReduce {
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
 				}
-			}
-
+			}*/
+			context.write("key", "value");
 		}
 	}
 
@@ -533,7 +533,7 @@ public class MapReduce {
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
-
+/*
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
   
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
@@ -549,7 +549,7 @@ public class MapReduce {
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
-/*
+
     //--------START CHAIN MAP REDUCE JOB(3)---------------------//
 
 
