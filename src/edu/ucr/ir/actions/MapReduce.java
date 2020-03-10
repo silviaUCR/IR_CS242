@@ -531,11 +531,11 @@ public class MapReduce {
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
     
-    FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
+    FileOutputFormat.setOutputPath(job, new Path(out));
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
-/*
+
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
   
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
@@ -546,12 +546,12 @@ public class MapReduce {
     job2.setMapOutputValueClass(Text.class);
     job2.setOutputKeyClass(Text.class);
     job2.setOutputValueClass(Text.class);
-    FileOutputFormat.setOutputPath(job2, new Path(out, "out2")); 
+    FileOutputFormat.setOutputPath(job2, new Path(out));
     
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
-
+/*
     //--------START CHAIN MAP REDUCE JOB(3)---------------------//
 
 
