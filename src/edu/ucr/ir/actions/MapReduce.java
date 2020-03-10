@@ -220,9 +220,9 @@ public class MapReduce {
 			String webpages[] = line.split(WEBPAGE_DS);
 
 			for (String webpage : webpages){
-				String body[] = webpage.split(BODY_DS);
+				//String body[] = webpage.split(BODY_DS);
 				//String body_1[] = body[1].split(LINK_DS);
-				String body_dirty = body[1];
+				//String body_dirty = body[1];
 				//String body_dirty = body_1[0];
 				//String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
 				//String body_clean = body_dirty;
