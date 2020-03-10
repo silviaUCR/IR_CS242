@@ -218,16 +218,16 @@ public class InvertedIndex {
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
 
-			for (Text webpage : webpages[]){
+			for (String webpage : webpages){
 				String body[] = webpage.split(BODY_DS);
 				String body_1[] = body[1].split("\"links\":[\"");
 				String body_dirty = body_1[0];
 				String body_clean = body_dirty.replace(",", "\"", "\\", "\'", ":");
 
-				String url[] = webpage.split("\"");
-				String url_final = url[0];
-				String word[] = body_clean.split(WORD_DS);
-				for (Text word : word[]){
+				String urls[] = webpage.split("\"");
+				String url_final = urls[0];
+				String words[] = body_clean.split(WORD_DS);
+				for (String word : words){
 					word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
