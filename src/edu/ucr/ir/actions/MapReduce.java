@@ -537,7 +537,7 @@ public class MapReduce {
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
-
+/*
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
   
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
@@ -553,7 +553,7 @@ public class MapReduce {
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
-/*
+
     //--------START CHAIN MAP REDUCE JOB(3)---------------------//
 
 
