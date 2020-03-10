@@ -305,7 +305,7 @@ public class InvertedIndex {
 			public void reduce(Text key, Iterable<Text> values,
 				Context context
 				) throws IOException, InterruptedException {
-			String posting = null
+			String posting = null;
 
 
 			for (Text txtValue : values) {
