@@ -29,7 +29,7 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 
 
 
-public class InvertedIndex {
+public class MapReduce {
 	
 
 //////////////////////////////////// START CUSTOM INPUT FORMAT ////////////////////////////////////////////////////////////
