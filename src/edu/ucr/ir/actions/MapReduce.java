@@ -217,6 +217,8 @@ public class MapReduce {
 
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
+			word_url_key.set("key");
+			value.set("1");
 /*
 			for (String webpage : webpages){
 				String body[] = webpage.split(BODY_DS);
