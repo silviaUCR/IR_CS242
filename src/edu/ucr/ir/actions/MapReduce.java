@@ -208,6 +208,7 @@ public class MapReduce {
 		private static final String MR_DATA_SEPARATOR = "\t";
 		private static final String WEBPAGE_DS = "\"url\":\"";
 		private static final String BODY_DS = "\"body\":\"";
+		private static final String LINK_DS = "\"links\":[\"";
 		private static final String WORD_DS = " ";
 
 		public void map(Text key, Text value, Context context
@@ -218,15 +219,13 @@ public class MapReduce {
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
 
-
-			for (String webpage : webpages) {
+			for (String webpage : webpages){
 				String body[] = webpage.split(BODY_DS);
-				String body_1[] = body[1].split("links");
+				String body_1[] = body[1].split(LINK_DS);
 				String body_dirty = body_1[0];
 				String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
 				String body_clean = body_dirty;
-				/*
-				for(String[] replacement: sp_chr_to_blk) {
+				/*for(String[] replacement: sp_chr_to_blk) {
 					body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
 				}
 				String urls[] = webpage.split("\"");
@@ -236,11 +235,12 @@ public class MapReduce {
 					word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
-				}
-			}*/ word_url_key.set("key");
-				value.set("1");
+				}*/
+				word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
+				value.set("1");  //creates the value. 1 is just a dummy variable
 				context.write(word_url_key, value);
 			}
+
 		}
 	}
 
@@ -537,7 +537,7 @@ public class MapReduce {
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
-/*
+
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
   
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
@@ -553,7 +553,7 @@ public class MapReduce {
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
-
+/*
     //--------START CHAIN MAP REDUCE JOB(3)---------------------//
 
 
