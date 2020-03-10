@@ -238,7 +238,7 @@ public class MapReduce {
 					context.write(word_url_key, value);
 				}
 			}*/
-			context.write("key", "value");
+			context.write(word_url_key, value);
 		}
 	}
 
