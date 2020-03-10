@@ -220,7 +220,12 @@ public class MapReduce {
 			String webpages[] = line.split(WEBPAGE_DS);
 
 			for (String webpage : webpages){
-				String body[] = webpage.split(BODY_DS);
+				String bodies[] = webpage.split(BODY_DS);
+				for (String body : bodies) {
+					word_url_key.set("key");  //creates the key
+					value.set("1");  //creates the value. 1 is just a dummy variable
+					context.write(word_url_key, value);
+				}
 				//String body_1[] = body[1].split(LINK_DS);
 				//String body_dirty = body[1];
 				//String body_dirty = body_1[0];
@@ -238,9 +243,7 @@ public class MapReduce {
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
 				}*/
-				word_url_key.set("key");  //creates the key
-				value.set("1");  //creates the value. 1 is just a dummy variable
-				context.write(word_url_key, value);
+
 			}
 
 		}
