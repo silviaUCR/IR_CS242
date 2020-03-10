@@ -225,25 +225,24 @@ public class MapReduce {
 				final Matcher matcher = pattern.matcher("\"url\":\"" + webpage + "\"");
 				matcher.find();
 				String url = matcher.group(1);
-				final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\"", Pattern.DOTALL);
-				final Matcher bodymatcher = bodypattern.matcher("\"body\":\"" + webpage + "\"");
-				bodymatcher.find();
-				String body = bodymatcher.group(1);
-				//String bodies[] = webpage.split(BODY_DS);
-				/*for (String body : bodies) {
-					String body_1[] = body.split(LINK_DS);
-					word_url_key.set("key");  //creates the key
+
+				String bodies[] = webpage.split(BODY_DS);
+				for (String body : bodies) {
+					final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\",\"metaDescription\":\"", Pattern.DOTALL);
+					final Matcher bodymatcher = bodypattern.matcher("\"body\":\"" + body + "\",\"metaDescription\":\"");
+					bodymatcher.find();
+					String body_dirty = bodymatcher.group(1);
+					//String body_1[] = body.split(LINK_DS);
+					word_url_key.set(body_dirty);  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
-				}*/
-				//
-				//String body_dirty = body[1];
-				//String body_dirty = body_1[0];
-				//String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
-				//String body_clean = body_dirty;
-				//for(String[] replacement: sp_chr_to_blk) {
-					//body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
-				//}
+				}
+				/*
+				String[][] sp_chr_to_blk = {{",",""},{"\"",""},{"\\",""},{"\'",""},{":",""}}; //special characters to remove. could implement the same stop word list algo from part a.
+				String body_clean = body_dirty;
+				for(String[] replacement: sp_chr_to_blk) {
+					body_clean = body_clean.replace(replacement[0], replacement[1]); //clean body after all the special characters are removed.
+				}
 				//String urls[] = webpage.split("\"");
 				//String url_final = urls[0];
 				//String words[] = body_clean.split(WORD_DS);
@@ -254,9 +253,9 @@ public class MapReduce {
 					context.write(word_url_key, value);
 				}*/
 
-				word_url_key.set(url);  //creates the key
-				value.set("1");  //creates the value. 1 is just a dummy variable
-				context.write(word_url_key, value);
+				//word_url_key.set(body_dirty);  //creates the key
+				//value.set("1");  //creates the value. 1 is just a dummy variable
+				//context.write(word_url_key, value);
 
 			}
 
