@@ -264,7 +264,7 @@ public class InvertedIndex {
 				count += 1;
 			}
 
-			posting = count.toString();
+			posting = Integer.toString(count);
 			datakey = word_url;
 			context.write(new Text(datakey), new Text(posting));
 
