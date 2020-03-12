@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>IR-Team Search</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://code.angularjs.org/1.2.13/angular.js"></script>
+    <script src="app.js"></script>
+    <script src="controller.js"></script>
 </head>
-
 <body>
-<H2>Place Holder for now....</H2>
+<!-- Initialize a new AngularJS app and associate it
+     with a module named "instantSearch"-->
+<div ng-app="searchApp" ng-controller="searchController" style="width:500px">
+    <div>
+        <h2>Information Retrieval Search Engine</h2>
+    </div>
+    <div style="margin:20px">
+        <p>
+            Below you have list of top english movie names.
+            You can make use of instant search engine to search
+            your favourite movie.
+        </p>
+    </div>
+    <div class="bar">
+        <!-- Create a binding between the searchString model
+        and the text field -->
+        <input type="text" ng-model="searchString"
+               placeholder="Enter your search terms" />
+    </div>
+    <ul>
+        <!-- Render a li element for every entry in the items array. Notice
+             the custom search filter "searchFor". It takes the value of the
+             searchString model as an argument.
+         -->
+        <li ng-repeat="m in movies | searchFor:searchString">
+            <p>{{m.releaseYr}} : {{m.name}}</p>
+        </li>
+    </ul>
+</div>
 </body>
 </html>
