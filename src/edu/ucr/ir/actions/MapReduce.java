@@ -1,3 +1,5 @@
+//package edu.ucr.ir.actions;
+
 import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -27,6 +29,14 @@ import org.apache.hadoop.util.LineReader;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 
 
@@ -214,25 +224,56 @@ public class MapReduce {
 
 		public void map(Text key, Text value, Context context
 		) throws IOException, InterruptedException {
+			JsonParser jsonParser = new JsonParser();
+
+			String json = value.toString();
+
+			JsonElement jsonTree = parser.parse(json);
+
+			if(jsonTree.isJsonObject()){
+				JsonObject jsonObject = jsonTree.getAsJsonObject();
+
+				JsonElement f1 = jsonObject.get("f1");
+
+				JsonElement f2 = jsonObject.get("f2");
+
+				if(f2.isJsonObject()){
+					JsonObject f2Obj = f2.getAsJsonObject();
+
+					JsonElement f3 = f2Obj.get("f3");
+				}
+
+			}
+
+
+
 
 			String line = value.toString();
-
 			int end = 0;
 			String webpages[] = line.split(WEBPAGE_DS);
+			String url = null;
 
 			for (String webpage : webpages){
 				final Pattern pattern = Pattern.compile("\"url\":\"(.+?)\"", Pattern.DOTALL);
 				final Matcher matcher = pattern.matcher("\"url\":\"" + webpage + "\"");
 				matcher.find();
-				String url = matcher.group(1);
-				word_url_key.set(url);  //creates the key
-				value.set("1");  //creates the value. 1 is just a dummy variable
-				context.write(word_url_key, value);
-/*
+				// to catch any non url strings.
+				if (matcher.group(1).contains("https://")) {
+					url = matcher.group(1);
+					word_url_key.set(url);  //creates the key
+					value.set("1");  //creates the value. 1 is just a dummy variable
+					context.write(word_url_key, value);
+
+				}
+				else {
+
+				}
+
 				String bodies[] = webpage.split(BODY_DS);
+/*
 				for (String body : bodies) {
-					final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\",\"metaDescription\":\"", Pattern.DOTALL);
-					final Matcher bodymatcher = bodypattern.matcher("\"body\":\"" + body + "\",\"metaDescription\":\"");
+					final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\"", Pattern.DOTALL);
+					final Matcher bodymatcher = bodypattern.matcher("\"body\":" + body + ",\"metaDescription\":\"");
 					bodymatcher.find();
 					String body_dirty = bodymatcher.group(1);
 					//String body_1[] = body.split(LINK_DS);
@@ -256,9 +297,6 @@ public class MapReduce {
 					context.write(word_url_key, value);
 				}*/
 
-				//word_url_key.set(body_dirty);  //creates the key
-				//value.set("1");  //creates the value. 1 is just a dummy variable
-				//context.write(word_url_key, value);
 
 			}
 
@@ -542,9 +580,9 @@ public class MapReduce {
 
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
-    
+
     Path out = new Path(args[1]);
-  
+
     Job job = Job.getInstance(conf, "create posting with tf");
     job.setJarByClass(MapReduce.class);
     MultipleInputs.addInputPath(job, new Path(args[0]), CustomInputFormat.class, MapPosting.class);
@@ -553,14 +591,14 @@ public class MapReduce {
     job.setMapOutputValueClass(Text.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
-    
+
     FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
 /*
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
-  
+
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
     job2.setJarByClass(MapReduce.class);
     MultipleInputs.addInputPath(job2, new Path(out, "out1"), CustomInputFormat.class, MapInvertedIndex.class);
@@ -570,7 +608,7 @@ public class MapReduce {
     job2.setOutputKeyClass(Text.class);
     job2.setOutputValueClass(Text.class);
     FileOutputFormat.setOutputPath(job2, new Path(out, "out2"));
-    
+
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
@@ -586,8 +624,8 @@ public class MapReduce {
     job3.setMapOutputValueClass(Text.class);
     job3.setOutputKeyClass(Text.class);
     job3.setOutputValueClass(Text.class);
-    FileOutputFormat.setOutputPath(job3, new Path(out, "out3")); 
-   
+    FileOutputFormat.setOutputPath(job3, new Path(out, "out3"));
+
     if (!job3.waitForCompletion(true)) {
 	System.exit(1);
     }
@@ -603,8 +641,8 @@ public class MapReduce {
     job4.setMapOutputValueClass(Text.class);
     job4.setOutputKeyClass(Text.class);
     job4.setOutputValueClass(Text.class);
-    FileOutputFormat.setOutputPath(job4, new Path(out, "out4")); 
-   
+    FileOutputFormat.setOutputPath(job4, new Path(out, "out4"));
+
     if (!job4.waitForCompletion(true)) {
 	System.exit(1);
     }
