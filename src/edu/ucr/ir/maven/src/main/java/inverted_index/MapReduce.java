@@ -1,16 +1,16 @@
-//package edu.ucr.ir.actions;
+package edu.ucr.ir.maven.src.main.java.inverted_index;//package edu.ucr.ir.actions;
 
 import java.io.IOException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.util.Iterator;
-import java.util.StringTokenizer;
 import java.text.DateFormatSymbols;
 import java.text.NumberFormat;
+import java.util.logging.Level;
 import java.util.regex.*;
-import java.math.RoundingMode;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+//import org.apache.commons.logging.Log;
+//import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataInputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -29,14 +29,6 @@ import org.apache.hadoop.util.LineReader;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.util.GenericOptionsParser;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
 
 
 
@@ -67,8 +59,8 @@ public class MapReduce {
 		private Text key = new Text();
 		private Text value = new Text();
 				
-		private static final Log LOG =
-		LogFactory.getLog(CustomRecordReader.class);
+		//private static final Log LOG =
+		//LogFactory.getLog(CustomRecordReader.class);
 	
 		@Override
 		public void initialize(InputSplit genericSplit, TaskAttemptContext context) throws IOException {
@@ -224,7 +216,7 @@ public class MapReduce {
 
 		public void map(Text key, Text value, Context context
 		) throws IOException, InterruptedException {
-			JsonParser jsonParser = new JsonParser();
+			JsonParser parser = new JsonParser();
 
 			String json = value.toString();
 
@@ -233,20 +225,23 @@ public class MapReduce {
 			if(jsonTree.isJsonObject()){
 				JsonObject jsonObject = jsonTree.getAsJsonObject();
 
-				JsonElement f1 = jsonObject.get("f1");
+				JsonElement f1 = jsonObject.get("pages");
 
-				JsonElement f2 = jsonObject.get("f2");
+				if(f1.isJsonObject()){
+					JsonObject f1Obj = f1.getAsJsonObject();
 
-				if(f2.isJsonObject()){
-					JsonObject f2Obj = f2.getAsJsonObject();
-
-					JsonElement f3 = f2Obj.get("f3");
+					JsonElement url = f1Obj.get("url");
+					JsonElement body = f1Obj.get("body");
+					word_url_key.set(String.valueOf(url));  //creates the key
+					value.set("1");  //creates the value. 1 is just a dummy variable
+					context.write(word_url_key, value);
+				}
 				}
 
 			}
 
 
-
+/*
 
 			String line = value.toString();
 			int end = 0;
@@ -270,7 +265,7 @@ public class MapReduce {
 				}
 
 				String bodies[] = webpage.split(BODY_DS);
-/*
+
 				for (String body : bodies) {
 					final Pattern bodypattern = Pattern.compile("\"body\":\"(.+?)\"", Pattern.DOTALL);
 					final Matcher bodymatcher = bodypattern.matcher("\"body\":" + body + ",\"metaDescription\":\"");
@@ -295,12 +290,12 @@ public class MapReduce {
 					word_url_key.set(word + MR_DATA_SEPARATOR + url_final);  //creates the key
 					value.set("1");  //creates the value. 1 is just a dummy variable
 					context.write(word_url_key, value);
-				}*/
+				}
 
 
 			}
 
-		}
+		}*/
 	}
 
 
@@ -600,7 +595,7 @@ public class MapReduce {
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
 
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
-    job2.setJarByClass(MapReduce.class);
+    job2.setJarByClass(edu.ucr.ir.maven.src.main.java.inverted_index.MapReduce.class);
     MultipleInputs.addInputPath(job2, new Path(out, "out1"), CustomInputFormat.class, MapInvertedIndex.class);
     job2.setReducerClass(ReduceInvertedIndex.class);
     job2.setMapOutputKeyClass(Text.class);
@@ -617,7 +612,7 @@ public class MapReduce {
 
 
     Job job3 = Job.getInstance(conf, "temp agg final");
-    job3.setJarByClass(MapReduce.class);
+    job3.setJarByClass(edu.ucr.ir.maven.src.main.java.inverted_index.MapReduce.class);
     MultipleInputs.addInputPath(job3, new Path(out, "out2"), CustomInputFormat.class, MapAverage.class);
     job3.setReducerClass(MaxMinReduce.class);
     job3.setMapOutputKeyClass(Text.class);
@@ -633,7 +628,7 @@ public class MapReduce {
     //--------START CHAIN MAP REDUCE JOB(4)---------------------//
 
     Job job4 = Job.getInstance(conf, "temp agg sort");
-    job4.setJarByClass(MapReduce.class);
+    job4.setJarByClass(edu.ucr.ir.maven.src.main.java.inverted_index.MapReduce.class);
     //MultipleInputs.addInputPath(job4, new Path(args[0]), CustomInputFormat.class, SortMaxMin.class); //TESTING PURPOSES
     MultipleInputs.addInputPath(job4, new Path(out, "out3"), CustomInputFormat.class, SortMaxMin.class);
     job4.setReducerClass(ReduceSort.class);
