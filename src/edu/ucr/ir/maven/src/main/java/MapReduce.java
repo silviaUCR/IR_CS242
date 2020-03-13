@@ -1,4 +1,5 @@
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -14,8 +15,11 @@ public class MapReduce {
 
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
-
+    // configuration should contain reference to your namenode
+    FileSystem fs = FileSystem.get(new Configuration());
+// true stands for recursively deleting the folder you gave
     Path out = new Path(args[1]);
+    fs.delete(out, true);
 
     Job job = Job.getInstance(conf, "create posting with tf");
     job.setJarByClass(MapReduce.class);
@@ -26,7 +30,7 @@ public class MapReduce {
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
 
-    FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
+    FileOutputFormat.setOutputPath(job, out);
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
