@@ -7,18 +7,6 @@ import com.google.gson.JsonParser;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
 
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -27,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MapPosting
+public class MapPageRank
         extends Mapper<Text, Text, Text, Text> {
     private Text word_url_key = new Text();
     private Text value = new Text();
@@ -79,8 +67,8 @@ public class MapPosting
                 if(isNullOrEmpty(word)) {
 
                 } else {
-                    word_url_key.set(word + MR_DATA_SEPARATOR + url);  //creates the key
-                    value.set("1");  //creates the value. 1 is just a dummy variable
+                    word_url_key.set(word);  //creates the key
+                    value.set(url);  //creates the value. 1 is just a dummy variable
                     context.write(word_url_key, value);
                 }
 
