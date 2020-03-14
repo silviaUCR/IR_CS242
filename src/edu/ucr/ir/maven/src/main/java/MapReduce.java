@@ -30,17 +30,17 @@ public class MapReduce {
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
 
-    FileOutputFormat.setOutputPath(job, out);
+    FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
     if (!job.waitForCompletion(true)) {
 		System.exit(1);
     }
-/*
+
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
 
     Job job2 = Job.getInstance(conf, "create inverted index with tf");
     job2.setJarByClass(MapReduce.class);
-    MultipleInputs.addInputPath(job2, new Path(out, "out1"), CustomInputFormat.class, MapInvertedIndex.class);
-    job2.setReducerClass(ReduceInvertedIndex.class);
+    MultipleInputs.addInputPath(job2, new Path(out, "out1"), inverted_index.CustomInputFormat.class, inverted_index.MapInvertedIndex.class);
+    job2.setReducerClass(inverted_index.ReduceInvertedIndex.class);
     job2.setMapOutputKeyClass(Text.class);
     job2.setMapOutputValueClass(Text.class);
     job2.setOutputKeyClass(Text.class);
@@ -50,7 +50,7 @@ public class MapReduce {
     if (!job2.waitForCompletion(true)) {
 		System.exit(1);
     }
-
+/*
     //--------START CHAIN MAP REDUCE JOB(3)---------------------//
 
 

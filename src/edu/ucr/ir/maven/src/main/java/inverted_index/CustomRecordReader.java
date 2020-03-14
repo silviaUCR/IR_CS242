@@ -24,8 +24,7 @@ public class CustomRecordReader extends RecordReader<Text, Text> {
     private Text key = new Text();
     private Text value = new Text();
 
-    //private static final Log LOG =
-    //LogFactory.getLog(CustomRecordReader.class);
+
 
     @Override
     public void initialize(InputSplit genericSplit, TaskAttemptContext context) throws IOException {
