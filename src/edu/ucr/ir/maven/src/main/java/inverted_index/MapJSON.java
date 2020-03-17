@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class MapInvertedIndex
+public class MapJSON
         extends Mapper<Text, Text, Text, Text> {
     private Text word_url_key = new Text();
     private Text value = new Text();
