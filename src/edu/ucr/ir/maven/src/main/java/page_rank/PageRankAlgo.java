@@ -1,4 +1,4 @@
-package inverted_index;
+package page_rank;
 
 import java.io.IOException;
 import org.apache.hadoop.fs.Path;

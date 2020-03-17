@@ -1,4 +1,4 @@
-package inverted_index;
+package page_rank;
 
 import java.io.IOException;
 import org.apache.hadoop.fs.Path;
@@ -19,7 +19,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import org.apache.commons.lang3.StringUtils;
+
 import org.apache.hadoop.util.ToolRunner;
 
 public class PageRankInitializer extends Configured implements Tool {

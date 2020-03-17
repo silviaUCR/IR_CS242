@@ -1,7 +1,7 @@
-package inverted_index;
+package page_rank;
 
 import java.io.IOException;
-import java.util.Comparator;
+
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;

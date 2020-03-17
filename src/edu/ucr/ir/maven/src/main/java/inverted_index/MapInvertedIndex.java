@@ -48,7 +48,7 @@ public class MapInvertedIndex
             String url = urlHolder.getAsJsonObject().getAsJsonPrimitive("url").getAsString();
             String body = urlHolder.getAsJsonObject().getAsJsonPrimitive("body").getAsString();
             //body = body.replaceAll("[^\\p{ASCII}]", "");
-            body = body.replaceAll("[^a-zA-Z0-9_-_ ]", "");
+            //body = body.replaceAll("[^a-zA-Z0-9_-_ ]", "");
 
             //allWords.clear();
 

@@ -6,17 +6,6 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import java.io.IOException;
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.util.ToolRunner;
-import inverted_index.WikiCount;
-import inverted_index.PageRankInitializer;
-import inverted_index.PageRankAlgo;
-import inverted_index.Sorter;
-import inverted_index.GraphLink;
-
 
 
 public class MapReduce {
@@ -45,6 +34,11 @@ public class MapReduce {
     if (!job.waitForCompletion(true)) {
       System.exit(1);
     }
+
+    //date = new Date(); endTime = date.getTime(); //end timer
+
+
+
   /*
     //--------START CHAIN MAP REDUCE JOB(2)---------------------//
 

@@ -1,8 +1,8 @@
-import inverted_index.*;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.util.ToolRunner;
+import page_rank.*;
 
 import java.io.IOException;
 
@@ -32,10 +32,10 @@ public class PageRank {
     output = args[1];
 
     //Setting output paths
-    graphLink = "/user/cloudera/assign3/run4/GraphLink";
-    wikiCount = "/user/cloudera/assign3/run4/WikiCount";
-    pageRankInitializer = "/user/cloudera/assign3/run4/PageRankInitializer";
-    pageRankAlgo = "/user/cloudera/assign3/run4/PageRankAlgo";
+    graphLink = "GraphLink";
+    wikiCount = "WikiCount";
+    pageRankInitializer = "PageRankInitializer";
+    pageRankAlgo = "PageRankAlgo";
 
     //Run GraphLink
     status = ToolRunner.run(new GraphLink(), new String[] {input,graphLink});
