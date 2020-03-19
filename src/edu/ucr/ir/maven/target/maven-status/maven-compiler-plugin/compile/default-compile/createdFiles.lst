@@ -1,5 +1,6 @@
 page_rank\GraphLink.class
 page_rank\Sorter$SorterReducer.class
+genFile.class
 inverted_index\ReduceInvertedIndex.class
 page_rank\PageRankAlgo.class
 MapReduce.class
@@ -20,6 +21,7 @@ inverted_index\CustomInputFormat.class
 page_rank\PageRankInitializer.class
 page_rank\PageRankAlgo$PageRankAlgoReducer.class
 page_rank\WikiCount$WikiCountMap.class
+FileToArrayOfBytes.class
 inverted_index\MapInvertedIndex.class
 page_rank\PageRankAlgo$PageRankAlgoMap.class
 inverted_index\ReduceJSON.class

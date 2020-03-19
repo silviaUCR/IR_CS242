@@ -26,6 +26,7 @@ public class CustomRecordReader extends RecordReader<Text, Text> {
 
 
 
+
     @Override
     public void initialize(InputSplit genericSplit, TaskAttemptContext context) throws IOException {
 

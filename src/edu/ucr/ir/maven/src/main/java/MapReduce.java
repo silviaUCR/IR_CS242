@@ -6,6 +6,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.io.compress.GzipCodec;
 
 
 public class MapReduce {
@@ -29,6 +30,8 @@ public class MapReduce {
     job.setMapOutputValueClass(Text.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
+    FileOutputFormat.setCompressOutput(job, true);
+    FileOutputFormat.setOutputCompressorClass(job, GzipCodec.class);
 
     FileOutputFormat.setOutputPath(job, new Path(out, "out1"));
     if (!job.waitForCompletion(true)) {
